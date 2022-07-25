@@ -8,7 +8,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
-class HHParser():
+class HHParser:
     def test_module(self):
         print('eeee')
 
@@ -57,18 +57,21 @@ class HHParser():
         first_vacancy = browser.find_elements(By.CSS_SELECTOR, '[data-qa="vacancy-serp__vacancy-title"]')[0]
         global first_vacancy_link
         first_vacancy_link = first_vacancy.get_attribute('href')
-        print(first_vacancy_link)
+        # print(first_vacancy_link)
+        return first_vacancy_link
         time.sleep(1)
         browser.quit()
 
 
-    def get_first_vacancy(self, link):
+    def get_first_vacancy(link):
         browser = webdriver.Chrome()
         browser.get(link)
-        vacancy_title = browser.find_element(By.CSS_SELECTOR, 'h1.bloko-header-section-1 span').text
-        vacancy_salary = browser.find_element(By.CSS_SELECTOR, '[data-qa="vacancy-salary"] span').text
+        time.sleep(1)
+        vacancy_title = browser.find_element(By.CSS_SELECTOR, 'h1.bloko-header-section-1').text
+        vacancy_salary = browser.find_element(By.CSS_SELECTOR, '[data-qa="vacancy-salary"]').text
         vacancy_experience = browser.find_elements(By.CSS_SELECTOR, 'p.vacancy-description-list-item')
         vacancy_description = browser.find_element(By.CSS_SELECTOR, 'div.vacancy-description').text
+        print('Описание первой вакансии')
         print(vacancy_title)
         print(vacancy_salary)
         for i in vacancy_experience:
