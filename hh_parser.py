@@ -35,8 +35,10 @@ class HHParser:
         button_search.click()
         salar = browser.find_elements(By.CSS_SELECTOR, '.bloko-radio__text [data-qa="serp__novafilter-title"]')
         time.sleep(1)
-        vacancy_amount = search_for_element((By.CSS_SELECTOR, '[data-qa="vacancies-total-found"] span'))
-        vacancy_amount = vacancy_amount.text.replace(', ', '')
+        vacancy_number = browser.find_elements(By.CSS_SELECTOR, '[data-qa="vacancies-total-found"] span')
+        if len(vacancy_number) < 1:
+            return "Не найдено результатов"
+        vacancy_amount = vacancy_number[0].text.replace(', ', '')
         time.sleep(1)
         solar_list = [''.join([f for f in i.text if f.isdigit()]) for i in salar if 'от' in i.text]
         time.sleep(1)
@@ -51,15 +53,11 @@ class HHParser:
             average_salary = int(total_amount / quantity)
         else:
             average_salary = 'Нет данных'
-        print('Вы искали ', vacancy_name, 'в городе: ', city)
-        print('Средняя зарплата по вашей вакансии составляет: ', average_salary)
-        print('Найдено: ', vacancy_amount)
         first_vacancy = browser.find_elements(By.CSS_SELECTOR, '[data-qa="vacancy-serp__vacancy-title"]')[0]
         global first_vacancy_link
         first_vacancy_link = first_vacancy.get_attribute('href')
         # print(first_vacancy_link)
-        return first_vacancy_link
-        time.sleep(1)
+        return vacancy_amount, average_salary, first_vacancy_link
         browser.quit()
 
 
@@ -80,7 +78,7 @@ class HHParser:
         browser.quit()
 
 
-# HHParser.hhparser('сторож', 'Вологда')
+# print(HHParser.hhparser('юрист', 'Тула'))
 # get_first_vacancy(first_vacancy_link)
 
 
