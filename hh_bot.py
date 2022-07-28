@@ -2,7 +2,7 @@ import telebot
 from telebot import types
 from hh_parser import HHParser
 
-API_TOKEN = '5441322876:AAE_tmZYENJrNXBurTRlKZH6UsQN71L5LXk'
+API_TOKEN = 'token'
 
 bot = telebot.TeleBot(API_TOKEN)
 
