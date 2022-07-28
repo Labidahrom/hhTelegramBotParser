@@ -65,21 +65,23 @@ class HHParser:
         browser = webdriver.Chrome()
         browser.get(link)
         time.sleep(1)
-        vacancy_title = browser.find_element(By.CSS_SELECTOR, 'h1.bloko-header-section-1').text
-        vacancy_salary = browser.find_element(By.CSS_SELECTOR, '[data-qa="vacancy-salary"]').text
-        vacancy_experience = browser.find_elements(By.CSS_SELECTOR, 'p.vacancy-description-list-item')
-        vacancy_description = browser.find_element(By.CSS_SELECTOR, 'div.vacancy-description').text
-        print('Описание первой вакансии')
-        print(vacancy_title)
-        print(vacancy_salary)
-        for i in vacancy_experience:
-            print(i.text)
-        print(vacancy_description)
+        vacancy_description = []
+        vacancy_description.append(browser.find_element(By.CSS_SELECTOR, '.vacancy-title').text)
+        vacancy_description.append(browser.find_element(By.CSS_SELECTOR, '[data-qa="vacancy-salary"]').text)
+        vacancy_item = browser.find_elements(By.CSS_SELECTOR, 'p.vacancy-description-list-item')
+        vacancy_item_list = []
+        for i in vacancy_item:
+            vacancy_item_list.append(i.text)
+        join_vacancy_item_list = '\n'.join(vacancy_item_list)
+        vacancy_description.append(join_vacancy_item_list)
+        vacancy_description.append(browser.find_element(By.CSS_SELECTOR, 'div.vacancy-description').text)
+        full_vacancy_description = '\n'.join(vacancy_description)
+        return full_vacancy_description
         browser.quit()
 
 
 # print(HHParser.hhparser('юрист', 'Тула'))
-# get_first_vacancy(first_vacancy_link)
+# print(HHParser.get_first_vacancy('https://tula.hh.ru/vacancy/68137561'))
 
 
 
