@@ -8,9 +8,12 @@ bot = telebot.TeleBot(API_TOKEN)
 
 
 class HhRequest:
-    def __init__(self, vacancy_name):
-        self.vacancy_name = vacancy_name
+    def __init__(self):
+        self.vacancy_name = None
         self.vacancy_city = None
+        self.vacancy_amount = None
+        self.vacancy_salary = None
+        self.vacancy_description = None
 
 
 @bot.message_handler(content_types=['text'])
@@ -36,8 +39,22 @@ def start_hh_parser(message):
     if len(parser_info) == 3:
         bot.send_message(message.from_user.id, 'Выберите что вас интересует:', reply_markup=markup,
                          allow_sending_without_reply=True)
+        HHParser.vacancy_amount = parser_info[0]
+        HHParser.vacancy_salary = parser_info[1]
+        HHParser.vacancy_description = parser_info[2]
     else:
         bot.send_message(message.from_user.id, parser_info)
+    bot.register_next_step_handler(message, choose_option)
+
+def choose_option(message):
+    if message.text == "Количество вакансий":
+        bot.send_message(message.from_user.id, HHParser.vacancy_amount)
+    elif message.text == "Средняя зарплата":
+        bot.send_message(message.from_user.id, HHParser.vacancy_salary)
+    elif message.text == "Пример вакансии":
+        bot.send_message(message.from_user.id, HHParser.vacancy_description)
+    else:
+        bot.send_message(message.from_user.id, 'Ниче не выбрал')
     bot.register_next_step_handler(message, send_welcome)
 
 
